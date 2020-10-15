@@ -6,7 +6,39 @@
       <div class="endsars-title">
         <h1><span>#End</span>Police<br>Brutality</h1>
       </div>
-      <div class="tweetBox"></div>
+      <div class="tweetBox-container">
+        <div class="tweetBox">
+          <div class="top">
+            <div class="user-image"></div>
+            <div class="user-details">
+              <span class="display-name">Rinu #SARSMUSTEND💡</span>
+              <span class="user-name">@Savvyrinu</span>
+            </div>
+            <img class="twitter-logo" src="@/assets/twitter.svg" alt="">
+          </div>
+          <div class="content">
+            <span class="tweet" v-html="parseUsername(parseHashtag(tweet.content))"></span>
+            <span class="date">6m - Oct 10, 2010</span>
+          </div>
+          <div class="stats">
+            <div class="stats-c">
+              <div class="stats-item">
+                <img src="@/assets/ic_comments.svg" alt="">
+                <span>72</span>
+              </div>
+              <div class="stats-item">
+                <img src="@/assets/ic_retweet.svg" alt="">
+                <span>198</span>
+              </div>
+              <div class="stats-item">
+                <img src="@/assets/ic_like.svg" alt="">
+                <span>723</span>
+              </div>
+            </div>
+            <img class="report-icon" src="@/assets/info-icon.svg" alt="">
+          </div>
+        </div>
+      </div>
       <img class="candle-logo" src="@/assets/candle-logo.png" alt="">
     </div>
     <div
@@ -23,7 +55,9 @@ export default {
   components: {},
   data() {
     return {
-      tweet: {},
+      tweet: {
+        content: 'Jack just tweeted #EndSARS why you dey lose focus #EndSWAT!!! ✊🏾 Soro Soko weyrey @MBuhari',
+      },
       polling: null,
       showing: null,
       unwatch: null,
@@ -55,8 +89,21 @@ export default {
   methods: {
     getRandomTweet() {
       const tweet = this.tweets[Math.floor(Math.random() * this.tweets.length)];
+      this.$store.commit('twitter/SEEN_TWEET', tweet.id);
       this.$nextTick(() => {
         this.tweet = tweet;
+      });
+    },
+    parseHashtag(tweet) {
+      return tweet.replace(/[#]+[A-Za-z0-9-_]+/g, (t) => {
+        const tag = t.replace('#', '');
+        return `<a class="twitter-link" href="https://www.twitter.com/hashtag/${tag}" target="_blank">#${tag}</a>`;
+      });
+    },
+    parseUsername(tweet) {
+      return tweet.replace(/[@]+[A-Za-z0-9-_]+/g, (t) => {
+        const tag = t.replace('@', '');
+        return `<a class="twitter-link" href="https://www.twitter.com/${tag}" target="_blank">@${tag}</a>`;
       });
     },
   },
@@ -68,60 +115,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-  .end-sars-twitter {
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    position: relative;
-    background-repeat: repeat;
-    background-color: #000000;
-    .hands {
-      left: 0;
-      bottom: -5%;
-      width: 33%;
-      height: 100%;
-      position: absolute;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: bottom left;
-    }
-    .container {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      padding: 2.5%% 5%;
-      position: relative;
-      box-sizing: border-box;
-      @media (orientation: landscape) {
-        flex-direction: row;
-        align-items: flex-start;
-        justify-content: space-between;
-      }
-      @media (orientation: portrait) {
-        align-items: center;
-        flex-direction: column;
-        justify-content: flex-start;
-      }
-      .endsars-title {
-        h1 {
-          margin: 20px 0;
-          color: #FFFFFF;
-          font-size: 101px;
-          text-align: center;
-          font-family: "Gilroy";
-          span {
-            color: #F1531C;
-          }
-        }
-      }
-      img.candle-logo {
-        right: 3%;
-        bottom: 70px;
-        width: auto;
-        height: 70px;
-        position: absolute;
-      }
-    }
-  }
-</style>
+<style lang="scss"></style>
