@@ -7,7 +7,9 @@ export default {
   */
   fetchTweets({ commit }) {
     commit('STARTED_FETCHING');
-    fetchUserTweets({ count: 50 })
+    fetchUserTweets({
+      count: config.TWITTER_POLL_DEFAULT_COUNT
+    })
       .then((values) => {
         const tweets = values.filter((v) => v.retweeted).map((t) => t.retweeted_status);
         commit('RENEW_TWEET_BANK', tweets);
