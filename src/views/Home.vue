@@ -26,7 +26,7 @@
           </div>
           <div class="content">
             <span class="tweet" v-html="parseTweet(tweet.full_text)"></span>
-            <span class="date">{{tweet.createdAt | tweetDate}}</span>
+            <span class="date">{{tweet.created_at | tweetDate}}</span>
           </div>
           <div class="stats">
             <div class="stats-c">
@@ -122,14 +122,34 @@ export default {
     parseLinks(tweet) {
       return tweet.replace(/(?:(https?:\/\/[^\s]+))/m, '<a href="$1" class="twitter-link" target="_blank">$1</a>');
     },
+    parseLineBreaks(tweet) {
+      return tweet.replace(/\n/g, '<br>');
+    },
     parseTweet(tweet) {
-      return this.parseHashtag(this.parseUsername(this.parseLinks(tweet)));
+      return this.parseLineBreaks(
+        this.parseHashtag(
+          this.parseUsername(
+            this.parseLinks(tweet),
+          ),
+        ),
+      );
     },
   },
   filters: {
     tweetDate(d) {
       const m = moment(d);
-      return `m - ${m.format('MMM DD, YYYY')}`;
+      const md = (Math.ceil(moment().diff(m, 'minutes')) || 1);
+      const hd = Math.ceil(moment().diff(m, 'hours'));
+
+      if (md < 60) {
+        return `${md}m - ${m.format('MMM DD, YYYY')}`;
+      }
+
+      if (hd < 24) {
+        return `${hd}h - ${m.format('MMM DD, YYYY')}`;
+      }
+
+      return `${m.format('MMM DD, YYYY')}`;
     },
   },
   beforeDestroy() {
