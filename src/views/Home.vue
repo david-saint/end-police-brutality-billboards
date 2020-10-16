@@ -115,10 +115,11 @@ export default {
   },
   methods: {
     getRandomTweet() {
-      const tweet = {
-        ...this.tweets[Math.floor(Math.random() * this.tweets.length)],
-        comment_count: Math.floor(Math.random() * 1000),
-      };
+      const tweet = this.tweets[Math.floor(Math.random() * this.tweets.length)];
+      const { favorite_count: f, retweet_count: r } = tweet;
+      const min = Math.min(f, r);
+      const max = Math.max(f, r);
+      tweet.comment_count = Math.floor(Math.random() * (max - min) + min);
       this.$store.commit('twitter/SEEN_TWEET', tweet.id);
       this.$nextTick(() => {
         this.tweet = tweet;
