@@ -4,7 +4,17 @@
     :style="{backgroundImage: `url(${require('@/assets/texture.png')})`}">
     <div class="container">
       <div class="endsars-title">
-        <h1><span>#End</span>Police<br>Brutality</h1>
+        <vue-typed-js
+          loop
+          shuffle
+          :typeSpeed="100"
+          :backSpeed="50"
+          :backDelay="2000"
+          :strings="strings"
+          :contentType="'html'"
+        >
+          <h1>#End<span class="typing"></span></h1>
+        </vue-typed-js>
       </div>
       <div class="tweetBox-container">
         <div
@@ -69,6 +79,12 @@ export default {
       polling: null,
       showing: null,
       unwatch: null,
+      strings: [
+        'SARS',
+        'SWAT',
+        'Police<br>Brutality',
+        'Bad<br>Governance',
+      ],
     };
   },
   created() {
