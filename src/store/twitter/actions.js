@@ -1,5 +1,5 @@
 import config from '@/config';
-import { fetchTweetsOnHashTag } from '@/services/twitter';
+import { fetchUserTweets } from '@/services/twitter';
 
 export default {
   /*
@@ -7,11 +7,11 @@ export default {
   */
   fetchTweets({ commit }) {
     commit('twitter/STARTED_FETCHING');
-    Promise.all(
-      config.TWITTER_POLL_HASHTAGS.map((hashtag) => fetchTweetsOnHashTag({ hashtag })),
-    )
+    fetchUserTweets({ count: 50 })
       .then((values) => {
-        const tweets = values.reduce((a, v) => [...a, ...v], []);
+        const tweets = values.filter(v => v.retweeted).map(t => {
+          return t.retweeted_status;
+        });
         commit('twitter/RENEW_TWEET_BANK', tweets);
         commit('twitter/STOPPED_FETCHING');
       });

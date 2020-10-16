@@ -19,4 +19,15 @@ export function fetchTweetsOnHashTag({
   });
 }
 
-export function fetchTrends() {}
+export function fetchUserTweets({ count, monitoredAccount }) {
+  const params = {
+    count,
+    screen_name: monitoredAccount,
+  };
+
+  return new Promise((resolve, reject) => {
+    axios.get(config.TWITTER_POLL_ENDPOINT, { params })
+      .then(({ data }) => resolve(data))
+      .catch((err) => reject(err));
+  });
+}
