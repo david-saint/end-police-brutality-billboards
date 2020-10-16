@@ -8,7 +8,7 @@ export default {
   fetchTweets({ commit }) {
     commit('STARTED_FETCHING');
     fetchUserTweets({
-      count: config.TWITTER_POLL_DEFAULT_COUNT
+      count: config.TWITTER_POLL_DEFAULT_COUNT,
     })
       .then((values) => {
         const tweets = values.filter((v) => v.retweeted).map((t) => t.retweeted_status);
