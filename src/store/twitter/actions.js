@@ -6,14 +6,12 @@ export default {
     Fetch the tweets by hashtag stored in the config.
   */
   fetchTweets({ commit }) {
-    commit('twitter/STARTED_FETCHING');
+    commit('STARTED_FETCHING');
     fetchUserTweets({ count: 50 })
       .then((values) => {
-        const tweets = values.filter(v => v.retweeted).map(t => {
-          return t.retweeted_status;
-        });
-        commit('twitter/RENEW_TWEET_BANK', tweets);
-        commit('twitter/STOPPED_FETCHING');
+        const tweets = values.filter((v) => v.retweeted).map((t) => t.retweeted_status);
+        commit('RENEW_TWEET_BANK', tweets);
+        commit('STOPPED_FETCHING');
       });
   },
   /*

@@ -7,32 +7,40 @@
         <h1><span>#End</span>Police<br>Brutality</h1>
       </div>
       <div class="tweetBox-container">
-        <div class="tweetBox">
+        <div
+          class="tweetBox"
+          style="display:flex;align-items:center;justify-content:center;" v-if="loading">
+          <basic-loader color="#1C8AD7" :thickness="2" />
+        </div>
+        <div class="tweetBox" v-else>
           <div class="top">
-            <div class="user-image"></div>
+            <div
+              class="user-image"
+              :style="{backgroundImage: `url(${tweet.user.profile_image_url_https})`}"
+            ></div>
             <div class="user-details">
-              <span class="display-name">Rinu #SARSMUSTEND💡</span>
-              <span class="user-name">@Savvyrinu</span>
+              <span class="display-name">{{tweet.user.name}}</span>
+              <span class="user-name">@{{tweet.user.screen_name}}</span>
             </div>
             <img class="twitter-logo" src="@/assets/twitter.svg" alt="">
           </div>
           <div class="content">
-            <span class="tweet" v-html="parseUsername(parseHashtag(tweet.content))"></span>
-            <span class="date">6m - Oct 10, 2010</span>
+            <span class="tweet" v-html="parseTweet(tweet.full_text)"></span>
+            <span class="date">{{tweet.createdAt | tweetDate}}</span>
           </div>
           <div class="stats">
             <div class="stats-c">
               <div class="stats-item">
                 <img src="@/assets/ic_comments.svg" alt="">
-                <span>72</span>
+                <span>{{tweet.comment_count}}</span>
               </div>
               <div class="stats-item">
                 <img src="@/assets/ic_retweet.svg" alt="">
-                <span>198</span>
+                <span>{{tweet.retweet_count}}</span>
               </div>
               <div class="stats-item">
                 <img src="@/assets/ic_like.svg" alt="">
-                <span>723</span>
+                <span>{{tweet.favorite_count}}</span>
               </div>
             </div>
             <img class="report-icon" src="@/assets/info-icon.svg" alt="">
@@ -48,16 +56,16 @@
 </template>
 
 <script>
+import moment from 'moment';
 import config from '@/config';
+import BasicLoader from '@/components/loaders/BasicLoader.vue';
 
 export default {
   name: 'end-sars-twitter',
-  components: {},
+  components: { BasicLoader },
   data() {
     return {
-      tweet: {
-        content: 'Jack just tweeted #EndSARS why you dey lose focus #EndSWAT!!! ✊🏾 Soro Soko weyrey @MBuhari',
-      },
+      tweet: {},
       polling: null,
       showing: null,
       unwatch: null,
@@ -71,8 +79,10 @@ export default {
         if (value) {
           this.showing();
         } else {
+          this.getRandomTweet();
           this.showing = window.setInterval(
-            this.getRandomTweet(), config.TWITTER_TWEET_SHOW_INTERVAL,
+            () => this.getRandomTweet(),
+            config.TWITTER_TWEET_SHOW_INTERVAL,
           );
         }
       },
@@ -88,7 +98,10 @@ export default {
   },
   methods: {
     getRandomTweet() {
-      const tweet = this.tweets[Math.floor(Math.random() * this.tweets.length)];
+      const tweet = {
+        ...this.tweets[Math.floor(Math.random() * this.tweets.length)],
+        comment_count: Math.floor(Math.random() * 1000),
+      };
       this.$store.commit('twitter/SEEN_TWEET', tweet.id);
       this.$nextTick(() => {
         this.tweet = tweet;
@@ -105,6 +118,18 @@ export default {
         const tag = t.replace('@', '');
         return `<a class="twitter-link" href="https://www.twitter.com/${tag}" target="_blank">@${tag}</a>`;
       });
+    },
+    parseLinks(tweet) {
+      return tweet.replace(/(?:(https?:\/\/[^\s]+))/m, '<a href="$1" class="twitter-link" target="_blank">$1</a>');
+    },
+    parseTweet(tweet) {
+      return this.parseHashtag(this.parseUsername(this.parseLinks(tweet)));
+    },
+  },
+  filters: {
+    tweetDate(d) {
+      const m = moment(d);
+      return `m - ${m.format('MMM DD, YYYY')}`;
     },
   },
   beforeDestroy() {
