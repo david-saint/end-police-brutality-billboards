@@ -76,9 +76,10 @@ export default {
     this.unwatch = this.$store.watch(
       (state, getters) => getters['twitter/is_fetching'],
       (value) => {
-        if (value) {
-          this.showing();
-        } else {
+        if (this.showing) {
+          window.clearInterval(this.showing);
+        }
+        if (!value) {
           this.getRandomTweet();
           this.showing = window.setInterval(
             () => this.getRandomTweet(),
@@ -153,9 +154,9 @@ export default {
     },
   },
   beforeDestroy() {
-    this.polling();
     this.unwatch();
-    this.showing();
+    window.clearInterval(this.polling);
+    window.clearInterval(this.showing);
   },
 };
 </script>
