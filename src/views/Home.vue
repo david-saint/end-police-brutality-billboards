@@ -80,9 +80,7 @@ export default {
       unwatch: null,
       strings: [
         'SARS',
-        'SWAT',
         'Police<br>Brutality',
-        'Bad<br>Governance',
       ],
     };
   },
