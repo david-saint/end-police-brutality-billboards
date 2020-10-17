@@ -12,7 +12,7 @@ export default {
       monitoredAccount: config.TWITTER_POLL_USER,
     })
       .then((values) => {
-        const tweets = values.filter((v) => v.retweeted_status).map((t) => t.retweeted_status);
+        const tweets = values.filter((v) => v.retweeted).map((t) => t.retweeted_status);
         console.log('tweets', tweets);
         commit('RENEW_TWEET_BANK', tweets);
         commit('STOPPED_FETCHING');
