@@ -79,7 +79,7 @@ export default {
       showing: null,
       unwatch: null,
       strings: [
-        'SARS',
+        'SARS<img src="https://abs.twimg.com/hashflags/ENDSars_2020/ENDSars_2020.png" class="css-imgsz">',
         'Police<br>Brutality',
       ],
     };

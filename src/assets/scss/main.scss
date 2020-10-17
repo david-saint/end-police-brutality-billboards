@@ -107,33 +107,38 @@ html, body {
         font-size: 101px;
         text-align: center;
         font-family: "Gilroy";
+        .css-imgsz {height: 100px;}
         /* 1440x450 */
         @media screen and (orientation: landscape)
         and (max-height: 450px) and (max-width: 1440px) {
           font-size: 50px;
+          .css-imgsz {height: 50px;}
         }
         /* 1080x270 */
         @media screen and (orientation: landscape)
         and (max-height: 270px) and (max-width: 1080px) {
           font-size: 37.5px;
+          .css-imgsz {height: 35px;}
         }
         /* 400x300 */
         @media screen and (orientation: landscape)
         and (max-height: 300px) and (max-width: 400px) {
           font-size: 24px;
           margin: 5px;
+          .css-imgsz {height: 24px;}
         }
         /* 560x240 */
         @media screen and (orientation: landscape)
         and (max-height: 240px) and (max-width: 600px) {
           font-size: 24px;
+          .css-imgsz {height: 24px;}
         }
         /* 400x600 */
         @media screen and (orientation: portrait) and (max-height: 601px) and (max-width: 401px) {
           font-size: 24px;
           margin: 5px;
+          .css-imgsz {height: 24px;}
         }
-
         span {
           color: #FFFFFF;
         }
