@@ -6,7 +6,6 @@
       <div class="endsars-title">
         <vue-typed-js
           loop
-          shuffle
           :typeSpeed="100"
           :backSpeed="50"
           :backDelay="2000"
