@@ -593,6 +593,7 @@ html, body {
       width: auto;
       height: 70px;
       position: absolute;
+      display: none;
       /* 1440x450 */
       @media screen and (orientation: landscape)
       and (max-height: 450px) and (max-width: 1440px) {
